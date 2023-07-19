@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-     <title>Title Case</title>
+     <title>Get Even</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/forms.css">
   <style>
-    #output{
+    #container{
         border-radius:5px;
         min-height:40px;;
         border:1px solid black;
@@ -20,7 +20,7 @@
  </head>
  <body>
      <header>
-     <h1 class="page-header">Title Case</h1>
+     <h1 class="page-header">Get Even</h1>
         <nav class="topnav" id="myTopnav">
             <a href="index.html" class="active">Home</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
@@ -30,8 +30,8 @@
    <main class="wrapper">
  
     <h2 class="subheader">Place form code below:</h2>
-    <div id="output">Output goes here</div>
-    <form method="post" action="" class="main-form">
+    <div id="output">
+    <form method="get" action="" class="main-form">
       <div>
         <label for="input">input</label><br>
         <input type="text" name="input" id="input" placeholder="input" required autofocus>
@@ -40,6 +40,7 @@
         <input type="submit" id="submit">
       </div>
     </form>
+    </div>
     <h3>Page Origins</h3>
     <p>The HTML/CSS comes from Sara Newman's Web Fundamentals class as taught at Seattle Central. This page provides a basis for students to build a responsive portal page.</p>
     <p>The mobile navigation originates from <a href="https://www.w3schools.com/howto/howto_js_mobile_navbar.asp" target="_blank">W3Schools</a></p>
@@ -54,22 +55,35 @@
   <script src="js/main.js"></script>   
   <script>
 
-    function titleCase(str){
-      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
+      function getEven(num){
+        if(num % 2==0){//even!
+          return true;
+        }else{//odd!
+          return false;
+        }
+      }
 
-      const mySubmit = document.querySelector("#submit");
-      console.log(mySubmit);
+      const queryString = window.location.search;
+      console.log(queryString);
+      const urlParams = new URLSearchParams(queryString);
 
-      mySubmit.addEventListener("click",function(ev){
-          ev.preventDefault();
-          const myInput = document.querySelector("#input");
-          const myOutput = document.querySelector("#output");
-          myOutput.innerHTML = titleCase(myInput.value);
-          //alert(myInput.value);
+      if(queryString.length > 0){//data submitted 
+          let myOutput = `<div id="container">`;
+          if(urlParams.has("input")){
+            //alert(urlParams.get("input"));
+            let myInput = urlParams.get("input");
 
-      });
-
+            if(getEven(myInput)){//even
+              myOutput += `<p>You typed <b>${myInput}</b> and it's an even number!</p>`;
+            }else{//odd
+              myOutput += `<p>You typed <b>${myInput}</b> and it's an odd number!</p>`;
+            }
+          }
+          
+        myOutput += `<p><a href="index.html">CLEAR</a></p>`;
+        myOutput += `</div>`;  
+        document.querySelector("#output").innerHTML = myOutput;
+      }
   </script>
  </body>
 </html>
